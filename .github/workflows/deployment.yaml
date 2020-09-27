@@ -19,7 +19,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: NPM Install
         run: |
+          npm cache clean
+          rm -rf node_modules        
           npm install
+          chmod -R a+rwx ./node_modules
       - name: Production Build
         run: |
           npm run build
