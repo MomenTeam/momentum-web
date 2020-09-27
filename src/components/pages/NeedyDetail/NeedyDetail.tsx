@@ -157,79 +157,85 @@ function NeedyDetail(props: INeedyDetail) {
                 </Grid>
               </Box>
               <Grid gridTemplateColumns="1fr" gap="16px">
-                {response.data.data.needs.map((need: any, i: number) => {
-                  return (
-                    <Box
-                      backgroundColor="white"
-                      borderRadius="md"
-                      marginBottom="md"
-                      key={i}
-                      height="fit-content"
-                    >
-                      <Grid gridTemplateColumns="8fr 2fr 2fr" padding="2xl" gap="16px">
-                        <Flex flexDirection="column">
-                          <Text fontSize="200" lineHeight="300" fontWeight="Medium" color="gray700">
-                            {need.name}
-                          </Text>
-                          <Text
-                            fontSize="200"
-                            lineHeight="300"
-                            fontWeight="Medium"
-                            color="gray400"
-                            marginTop="xs"
-                          >
-                            {need.description}
-                          </Text>
-
-                          <Button
-                            height="fit-content"
-                            size="small"
-                            variant="outlined"
-                            palette="info"
-                            marginTop="lg"
-                            width="fit-content"
-                            onClick={() => {
-                              setVisible(true)
-                            }}
-                          >
-                            İhtiyaç listesini görüntüle
-                          </Button>
-                        </Flex>
-                        <Flex justifyContent="center" alignItems="center">
-                          <Box
-                            backgroundColor="gray100"
-                            height="fit-content"
-                            width="fit-content"
-                            borderRadius="md"
-                          >
+                {response.data.data.needs &&
+                  response.data.data.needs.map((need: any, i: number) => {
+                    return (
+                      <Box
+                        backgroundColor="white"
+                        borderRadius="md"
+                        marginBottom="md"
+                        key={i}
+                        height="fit-content"
+                      >
+                        <Grid gridTemplateColumns="8fr 2fr 2fr" padding="2xl" gap="16px">
+                          <Flex flexDirection="column">
                             <Text
-                              fontSize="150"
-                              lineHeight="200"
+                              fontSize="200"
+                              lineHeight="300"
                               fontWeight="Medium"
-                              marginTop="xs"
-                              color="gray500"
-                              textAlign="center"
-                              padding="xs"
+                              color="gray700"
                             >
-                              350 ₺ değerinde
+                              {need.name}
                             </Text>
-                          </Box>
-                        </Flex>
-                        <Flex justifyContent="center" alignItems="center">
-                          <Button
-                            height="fit-content"
-                            size="small"
-                            variant="primary"
-                            palette="info"
-                            onClick={() => setIsPaying(true)}
-                          >
-                            Destek ol
-                          </Button>
-                        </Flex>
-                      </Grid>
-                    </Box>
-                  )
-                })}
+                            <Text
+                              fontSize="200"
+                              lineHeight="300"
+                              fontWeight="Medium"
+                              color="gray400"
+                              marginTop="xs"
+                            >
+                              {need.description}
+                            </Text>
+
+                            <Button
+                              height="fit-content"
+                              size="small"
+                              variant="outlined"
+                              palette="info"
+                              marginTop="lg"
+                              width="fit-content"
+                              onClick={() => {
+                                setVisible(true)
+                              }}
+                            >
+                              İhtiyaç listesini görüntüle
+                            </Button>
+                          </Flex>
+                          <Flex justifyContent="center" alignItems="center">
+                            <Box
+                              backgroundColor="gray100"
+                              height="fit-content"
+                              width="fit-content"
+                              borderRadius="md"
+                            >
+                              <Text
+                                fontSize="150"
+                                lineHeight="200"
+                                fontWeight="Medium"
+                                marginTop="xs"
+                                color="gray500"
+                                textAlign="center"
+                                padding="xs"
+                              >
+                                350 ₺ değerinde
+                              </Text>
+                            </Box>
+                          </Flex>
+                          <Flex justifyContent="center" alignItems="center">
+                            <Button
+                              height="fit-content"
+                              size="small"
+                              variant="primary"
+                              palette="info"
+                              onClick={() => setIsPaying(true)}
+                            >
+                              Destek ol
+                            </Button>
+                          </Flex>
+                        </Grid>
+                      </Box>
+                    )
+                  })}
               </Grid>
               <Modal visible={visible} padding="2xl" width="520px">
                 <Card>
