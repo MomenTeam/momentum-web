@@ -22,6 +22,8 @@ jobs:
           npm cache clean --force
           rm -rf node_modules        
           npm install
+          npm i -g @rescripts/cli@0.0.12
+          chmod -R a+rwx ./node_modules
       - name: Production Build
         run: |
           npm run build
