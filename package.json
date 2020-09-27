@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "rescripts start",
-    "build": "rescripts build && rimraf build/**/*.map",
+    "build": "rescripts build",
     "prettify": "prettier --write './src/**/*.{ts,tsx}'",
     "test": "rescripts test",
     "test:watch": "jest --watch",
