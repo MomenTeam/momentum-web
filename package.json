@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "rescripts start",
-    "build": "rescripts build && rimraf build/**/*.map",
+    "build": "rescripts build && rm -rf build/**/*.map",
     "prettify": "prettier --write './src/**/*.{ts,tsx}'",
     "test": "rescripts test",
     "test:watch": "jest --watch",
@@ -23,7 +23,6 @@
     "react-hooks-compose": "^2.0.7",
     "react-icons": "^3.11.0",
     "react-router-dom": "^5.2.0",
-    "rimraf": "^3.0.2",
     "use-global-hook": "^0.2.1",
     "use-http": "^1.0.13"
   },
