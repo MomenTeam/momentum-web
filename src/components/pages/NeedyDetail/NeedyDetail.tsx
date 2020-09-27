@@ -1,77 +1,95 @@
-import { Box, Button, Card, Flex, Grid, Image, Modal, Text } from 'bumbag'
+import { Box, Button, Flex, Grid, Image, Text } from 'bumbag'
+import { FieldStack } from 'bumbag/ts/FieldStack/styles'
 import React, { useEffect } from 'react'
 import { FaChevronLeft } from 'react-icons/fa'
-import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import useFetch from 'use-http'
 import urls from '../../../routers/urls'
 import { Utils } from '../../../utils/utils'
+import { Form, FormattedInput, Input } from '../../molecules/Forms'
 
 export interface INeedyDetail {}
+
+export const Migros = [
+  {
+    name: 'SEK Sut',
+    price: 3.75,
+    photoUrl:
+      'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/11012010/11012010-a18da1.jpg',
+    isAvailable: true,
+    category: 'Sut',
+    from: 'MIGROS',
+  },
+  {
+    name: 'Tukas Domates Salcasi',
+    price: 8.95,
+    photoUrl:
+      'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/09010276/tukas-domates-salcasi-830-gr-0df078.jpg',
+    isAvailable: true,
+    from: 'A101',
+  },
+  {
+    name: 'Migros Nohut',
+    price: 6.5,
+    photoUrl:
+      'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/01049977/01049977-16269d.jpg',
+    isAvailable: true,
+    from: 'A101',
+  },
+  {
+    name: 'Eriş Un',
+    price: 5.97,
+    photoUrl:
+      'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/05016854/05016854-14bd04.jpg',
+    isAvailable: true,
+    from: 'A101',
+  },
+  {
+    name: 'Torku Toz Seker',
+    price: 18.75,
+    photoUrl:
+      'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/03312735/torku-toz-seker-3-kg-3230a0.jpg',
+    isAvailable: true,
+    from: 'MIGROS',
+  },
+  {
+    name: 'Zertum Sele Siyah Zeytin',
+    price: 29.9,
+    photoUrl:
+      'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/16011303/16011303-4988b4.jpg',
+    isAvailable: true,
+    from: 'A101',
+  },
+  {
+    name: 'Caykur Filiz Cay',
+    price: 21.3,
+    photoUrl:
+      'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/03111307/03111307-4ce14c.jpg',
+    isAvailable: true,
+    from: 'MIGROS',
+  },
+]
 
 function NeedyDetail(props: INeedyDetail) {
   const history = useHistory()
   const [visible, setVisible] = React.useState(false)
   const [isPaying, setIsPaying] = React.useState(false)
+  const [packageIndex, setPackageIndex] = React.useState(0)
 
-  const { get, response } = useFetch('http://18.158.138.59/v1')
+  const { get, response, post } = useFetch('http://18.158.138.59/v1')
   const location = useLocation()
-  const data = {
-    data: {
-      id: '312da393-31a8-4108-93d3-2c32ba5e127d',
-      firstName: 'string',
-      lastName: 'string',
-      phoneNumber: 'string',
-      summary: 'string',
-      priority: 0,
-      address: {
-        firstName: 'string',
-        lastName: 'string',
-        firstLine: 'string',
-        secondLine: 'string',
-        phoneNumber: 'string',
-        postalCode: 'string',
-        district: 'string',
-        city: 'string',
-      },
-      needyCategories: [0, 1],
-      needs: [
-        {
-          id: 'a3bebc1c-ce06-43b8-aea9-f63b5b32ee7b',
-          name: 'Gida',
-          description: 'Deneme',
-          lineItems: [
-            {
-              description: 'string',
-              amount: 0,
-              good: {
-                name: 'string',
-                price: 0,
-                photoLink: 'string',
-                isAvailable: true,
-                goodCategory: 0,
-              },
-            },
-          ],
-          isFulfilled: false,
-          priority: 1,
-          fulfilledBy: '',
-          fulfilledAt: '0001-01-01T00:00:00Z',
-          isCancelled: false,
-          cancelledAt: '0001-01-01T00:00:00Z',
-          cancelledBy: '',
-          createdAt: '2020-09-27T09:01:03.737Z',
-        },
-      ],
-      createdBy: '',
-      createdAt: '2020-09-27T08:00:38.822Z',
-    },
-    message: 'Get needy detail',
-    status: 200,
+
+  const addTodo = async (needyId: string, values: any) => {
+    await post(`/payment/${needyId}`, values)
   }
 
   useEffect(() => {
     get(`/needies/getNeedyDetail/${location.pathname.split('/')[2]}`)
   }, [])
+
+  useEffect(() => {
+    if (response.ok) history.push(urls.Homepage)
+  }, [response])
 
   return (
     <>
@@ -106,7 +124,7 @@ function NeedyDetail(props: INeedyDetail) {
                     alignItems="center"
                   >
                     <Text color="info400" fontWeight="Bold">
-                      {response.data.data.firstName} {response.data.data.lastName}
+                      {response.data.data.shortName}
                     </Text>
                   </Flex>
                   <Text
@@ -116,7 +134,7 @@ function NeedyDetail(props: INeedyDetail) {
                     color="gray700"
                     marginTop="lg"
                   >
-                    {response.data.data.firstName} {response.data.data.lastName}
+                    {response.data.data.maskedName}
                   </Text>
                   <Text
                     fontSize="200"
@@ -129,21 +147,32 @@ function NeedyDetail(props: INeedyDetail) {
                     {response.data.data.address.postalCode}
                   </Text>
                   <Flex marginTop="xs" marginBottom="md">
-                    {response.data.data.needyCategories.map((category: any, i: number) => {
-                      return (
-                        <Box
-                          key={i}
-                          padding="xs"
-                          backgroundColor="gray100"
-                          borderRadius="md"
-                          marginRight="xs"
-                        >
-                          <Text fontSize="100" color="gray500" fontWeight="Medium" marginRight="xs">
-                            {category === 0 ? 'Çocuklu aile' : '+65 Yaş'}
-                          </Text>
-                        </Box>
-                      )
-                    })}
+                    {response.data.data.needyCategories !== null &&
+                      response.data.data.needyCategories.length > 0 &&
+                      response.data.data.needyCategories.map((category: any, i: number) => {
+                        return (
+                          <>
+                            {category !== 0 && (
+                              <Box
+                                key={i}
+                                padding="xs"
+                                backgroundColor="gray100"
+                                borderRadius="md"
+                                marginRight="xs"
+                              >
+                                <Text
+                                  fontSize="100"
+                                  color="gray500"
+                                  fontWeight="Medium"
+                                  marginRight="xs"
+                                >
+                                  {category === 1 ? 'Çocuklu aile' : '+65 Yaş'}
+                                </Text>
+                              </Box>
+                            )}
+                          </>
+                        )
+                      })}
                   </Flex>
                   <Text
                     fontSize="200"
@@ -157,7 +186,7 @@ function NeedyDetail(props: INeedyDetail) {
                 </Grid>
               </Box>
               <Grid gridTemplateColumns="1fr" gap="16px">
-                {response.data.data.needs &&
+                {response.data.data.needs !== null &&
                   response.data.data.needs.map((need: any, i: number) => {
                     return (
                       <Box
@@ -186,20 +215,6 @@ function NeedyDetail(props: INeedyDetail) {
                             >
                               {need.description}
                             </Text>
-
-                            <Button
-                              height="fit-content"
-                              size="small"
-                              variant="outlined"
-                              palette="info"
-                              marginTop="lg"
-                              width="fit-content"
-                              onClick={() => {
-                                setVisible(true)
-                              }}
-                            >
-                              İhtiyaç listesini görüntüle
-                            </Button>
                           </Flex>
                           <Flex justifyContent="center" alignItems="center">
                             <Box
@@ -217,7 +232,21 @@ function NeedyDetail(props: INeedyDetail) {
                                 textAlign="center"
                                 padding="xs"
                               >
-                                350 ₺ değerinde
+                                {/* //TODO */}
+                                {/* {response.data.data.needs[i].lineItems.reduce(
+                                  (acc: any, cur: any) => {
+                                    if (
+                                      Migros.length > acc.good.goodId &&
+                                      Migros.length > cur.good.goodId
+                                    ) {
+                                      return (
+                                        Migros[acc.good.goodId].price +
+                                        Migros[cur.good.goodId].price * cur.amount
+                                      )
+                                    }
+                                  }
+                                )} */}
+                                ₺
                               </Text>
                             </Box>
                           </Flex>
@@ -227,119 +256,60 @@ function NeedyDetail(props: INeedyDetail) {
                               size="small"
                               variant="primary"
                               palette="info"
-                              onClick={() => setIsPaying(true)}
+                              onClick={() => {
+                                setIsPaying(true)
+                                setPackageIndex(i)
+                              }}
                             >
                               Destek ol
                             </Button>
                           </Flex>
                         </Grid>
+                        <Flex flexDirection="column" padding="2xl">
+                          {need.lineItems.map((lineItem: any) => {
+                            return (
+                              <>
+                                {Migros.length > lineItem.good.goodId && (
+                                  <Grid
+                                    backgroundColor="gray100"
+                                    elevation="100"
+                                    borderRadius="md"
+                                    key={i}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    gridTemplateColumns="1fr 3fr 1fr 1fr 1fr"
+                                    marginBottom="md"
+                                    paddingY="sm"
+                                  >
+                                    <Box marginX="md" elevation="400">
+                                      <Image
+                                        src={Migros[lineItem.good.goodId].photoUrl}
+                                        maxWidth="44px"
+                                        borderRadius="md"
+                                        display="block"
+                                      />
+                                    </Box>
+                                    <Text>{Migros[lineItem.good.goodId].name}</Text>
+                                    <Text>{Migros[lineItem.good.goodId].price} ₺</Text>
+                                    <Text>x {lineItem.amount}</Text>
+                                    <Box marginX="md" elevation="400">
+                                      <Image
+                                        src={`/assets/${Migros[lineItem.good.goodId].from}.png`}
+                                        maxWidth="32px"
+                                        borderRadius="md"
+                                        display="block"
+                                      />
+                                    </Box>
+                                  </Grid>
+                                )}
+                              </>
+                            )
+                          })}
+                        </Flex>
                       </Box>
                     )
                   })}
               </Grid>
-              <Modal visible={visible} padding="2xl" width="520px">
-                <Card>
-                  <Flex flexDirection="column">
-                    {[
-                      {
-                        name: 'SEK Sut',
-                        price: 3.75,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/11012010/11012010-a18da1.jpg',
-                        isAvailable: true,
-                        category: 'Sut',
-                        from: 'MIGROS',
-                      },
-                      {
-                        name: 'Tukas Domates Salcasi',
-                        price: 8.95,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/09010276/tukas-domates-salcasi-830-gr-0df078.jpg',
-                        isAvailable: true,
-                        from: 'A101',
-                      },
-                      {
-                        name: 'Migros Nohut',
-                        price: 6.5,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/01049977/01049977-16269d.jpg',
-                        isAvailable: true,
-                        from: 'A101',
-                      },
-                      {
-                        name: 'Eriş Un',
-                        price: 5.97,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/05016854/05016854-14bd04.jpg',
-                        isAvailable: true,
-                        from: 'A101',
-                      },
-                      {
-                        name: 'Torku Toz Seker',
-                        price: 18.75,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/03312735/torku-toz-seker-3-kg-3230a0.jpg',
-                        isAvailable: true,
-                        from: 'MIGROS',
-                      },
-                      {
-                        name: 'Zertum Sele Siyah Zeytin',
-                        price: 29.9,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/16011303/16011303-4988b4.jpg',
-                        isAvailable: true,
-                        from: 'A101',
-                      },
-                      {
-                        name: 'Caykur Filiz Cay',
-                        price: 21.3,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/03111307/03111307-4ce14c.jpg',
-                        isAvailable: true,
-                        from: 'MIGROS',
-                      },
-                    ].map((item: any, i: number) => (
-                      <Grid
-                        backgroundColor="gray100"
-                        elevation="100"
-                        borderRadius="md"
-                        key={i}
-                        justifyContent="center"
-                        alignItems="center"
-                        gridTemplateColumns="1fr 3fr 1fr 1fr"
-                        marginBottom="md"
-                        paddingY="sm"
-                      >
-                        <Box marginX="md" elevation="400">
-                          <Image
-                            src={item.photoUrl}
-                            maxWidth="44px"
-                            borderRadius="md"
-                            display="block"
-                          />
-                        </Box>
-                        <Text>{item.name}</Text>
-                        <Text>{item.price} ₺</Text>
-                        <Box marginX="md" elevation="400">
-                          <Image
-                            src={`/assets/${item.from}.png`}
-                            maxWidth="32px"
-                            borderRadius="md"
-                            display="block"
-                          />
-                        </Box>
-                      </Grid>
-                    ))}
-                  </Flex>
-                  <Button
-                    onClick={() => {
-                      setVisible(false)
-                    }}
-                  >
-                    Kapat
-                  </Button>
-                </Card>
-              </Modal>
             </Grid>
           )}
         </>
@@ -353,7 +323,7 @@ function NeedyDetail(props: INeedyDetail) {
             marginBottom="lg"
             iconBefore={Utils.getReactIconMetadata(FaChevronLeft({}))}
           >
-            Haneyi görüntüle
+            Geri
           </Button>
           <Grid gridTemplateColumns="1fr 2fr" gap="16px">
             <Grid gridTemplateColumns="1fr" gap="16px">
@@ -376,96 +346,44 @@ function NeedyDetail(props: INeedyDetail) {
                     </Text>
                   </Flex>
                   <Flex flexDirection="column">
-                    {[
-                      {
-                        name: 'SEK Sut',
-                        price: 3.75,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/11012010/11012010-a18da1.jpg',
-                        isAvailable: true,
-                        category: 'Sut',
-                        from: 'MIGROS',
-                      },
-                      {
-                        name: 'Tukas Domates Salcasi',
-                        price: 8.95,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/09010276/tukas-domates-salcasi-830-gr-0df078.jpg',
-                        isAvailable: true,
-                        from: 'A101',
-                      },
-                      {
-                        name: 'Migros Nohut',
-                        price: 6.5,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/01049977/01049977-16269d.jpg',
-                        isAvailable: true,
-                        from: 'A101',
-                      },
-                      {
-                        name: 'Eriş Un',
-                        price: 5.97,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/05016854/05016854-14bd04.jpg',
-                        isAvailable: true,
-                        from: 'A101',
-                      },
-                      {
-                        name: 'Torku Toz Seker',
-                        price: 18.75,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/03312735/torku-toz-seker-3-kg-3230a0.jpg',
-                        isAvailable: true,
-                        from: 'MIGROS',
-                      },
-                      {
-                        name: 'Zertum Sele Siyah Zeytin',
-                        price: 29.9,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/16011303/16011303-4988b4.jpg',
-                        isAvailable: true,
-                        from: 'A101',
-                      },
-                      {
-                        name: 'Caykur Filiz Cay',
-                        price: 21.3,
-                        photoUrl:
-                          'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/03111307/03111307-4ce14c.jpg',
-                        isAvailable: true,
-                        from: 'MIGROS',
-                      },
-                    ].map((item: any, i: number) => (
-                      <Grid
-                        backgroundColor="gray100"
-                        elevation="100"
-                        borderRadius="md"
-                        key={i}
-                        justifyContent="center"
-                        alignItems="center"
-                        gridTemplateColumns="1fr 3fr 1fr 1fr"
-                        marginBottom="md"
-                        paddingY="sm"
-                      >
-                        <Box marginX="md" elevation="400">
-                          <Image
-                            src={item.photoUrl}
-                            maxWidth="44px"
-                            borderRadius="md"
-                            display="block"
-                          />
-                        </Box>
-                        <Text>{item.name}</Text>
-                        <Text>{item.price} ₺</Text>
-                        <Box marginX="md" elevation="400">
-                          <Image
-                            src={`/assets/${item.from}.png`}
-                            maxWidth="32px"
-                            borderRadius="md"
-                            display="block"
-                          />
-                        </Box>
-                      </Grid>
-                    ))}
+                    {response.data.data.needs[packageIndex].lineItems.map((lineItem: any) => {
+                      return (
+                        <>
+                          {Migros.length > lineItem.good.goodId && (
+                            <Grid
+                              backgroundColor="gray100"
+                              elevation="100"
+                              borderRadius="md"
+                              justifyContent="center"
+                              alignItems="center"
+                              gridTemplateColumns="1fr 3fr 1fr 1fr 1fr"
+                              marginBottom="md"
+                              paddingY="sm"
+                            >
+                              <Box marginX="md" elevation="400">
+                                <Image
+                                  src={Migros[lineItem.good.goodId].photoUrl}
+                                  maxWidth="24px"
+                                  borderRadius="md"
+                                  display="block"
+                                />
+                              </Box>
+                              <Text>{Migros[lineItem.good.goodId].name}</Text>
+                              <Text>{Migros[lineItem.good.goodId].price} ₺</Text>
+                              <Text>x {lineItem.amount}</Text>
+                              <Box marginX="md" elevation="400">
+                                <Image
+                                  src={`/assets/${Migros[lineItem.good.goodId].from}.png`}
+                                  maxWidth="24px"
+                                  borderRadius="md"
+                                  display="block"
+                                />
+                              </Box>
+                            </Grid>
+                          )}
+                        </>
+                      )
+                    })}
                   </Flex>
                 </Grid>
               </Box>
@@ -475,6 +393,57 @@ function NeedyDetail(props: INeedyDetail) {
                 <Text color="info400" fontWeight="Bold">
                   Ödeme Bilgileri
                 </Text>
+                <Form
+                  initialValues={{ cardNo: '' }}
+                  onSubmit={(values: any) => {
+                    addTodo(response.data.data.needs[packageIndex].id, values)
+                  }}
+                >
+                  <Grid gridTemplateColumns="1fr 1fr" marginTop="xl" gap="16px">
+                    <Input name="fullName" fieldWrapper={{ label: 'Ad soyad' }} />
+                    <Input name="email" fieldWrapper={{ label: 'E-posta adresi' }} />
+                  </Grid>
+                  <Grid gridTemplateColumns="1fr 1fr" marginTop="xl" gap="16px">
+                    <FormattedInput
+                      name="creditCardNumber"
+                      size="small"
+                      format="####-####-####-####"
+                      fieldWrapper={{ label: 'Kart numarası' }}
+                      allowEmptyFormatting
+                      mask=" "
+                    />
+                    <FormattedInput
+                      size="small"
+                      name="expireDate"
+                      format="##/##"
+                      mask=" "
+                      fieldWrapper={{ label: 'Son kullanma tarihi' }}
+                      allowEmptyFormatting
+                    />
+                  </Grid>
+                  <Grid gridTemplateColumns="1fr 1fr" marginTop="xl" gap="16px">
+                    <FormattedInput
+                      name="cvv"
+                      size="small"
+                      format="###"
+                      mask="*"
+                      fieldWrapper={{ label: 'CVC' }}
+                      allowEmptyFormatting
+                    />
+                  </Grid>
+                  <Flex float="right" marginTop="lg">
+                    <Button
+                      size="small"
+                      palette="info"
+                      variant="primary"
+                      height="fit-content"
+                      width="fit-content"
+                      type="submit"
+                    >
+                      Ödemeyi gerçekleştir
+                    </Button>
+                  </Flex>
+                </Form>
               </Grid>
             </Box>
           </Grid>

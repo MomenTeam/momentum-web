@@ -72,7 +72,7 @@ function Homepage(props: IHomepageProps) {
                     alignItems="center"
                   >
                     <Text color="info400" fontWeight="Bold">
-                      ME
+                      {needy.shortName}
                     </Text>
                   </Flex>
                   <Text
@@ -96,17 +96,26 @@ function Homepage(props: IHomepageProps) {
                   <Flex marginTop="xs" marginBottom="md">
                     {needy.needyCategories.map((category: any, i: number) => {
                       return (
-                        <Box
-                          key={i}
-                          padding="xs"
-                          backgroundColor="gray100"
-                          borderRadius="md"
-                          marginRight="xs"
-                        >
-                          <Text fontSize="100" color="gray500" fontWeight="Medium" marginRight="xs">
-                            {category === 0 ? 'Çocuklu aile' : '+65 Yaş'}
-                          </Text>
-                        </Box>
+                        <>
+                          {category !== 0 && (
+                            <Box
+                              key={i}
+                              padding="xs"
+                              backgroundColor="gray100"
+                              borderRadius="md"
+                              marginRight="xs"
+                            >
+                              <Text
+                                fontSize="100"
+                                color="gray500"
+                                fontWeight="Medium"
+                                marginRight="xs"
+                              >
+                                {category === 1 ? 'Çocuklu aile' : '+65 Yaş'}
+                              </Text>
+                            </Box>
+                          )}
+                        </>
                       )
                     })}
                   </Flex>

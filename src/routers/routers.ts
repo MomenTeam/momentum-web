@@ -3,6 +3,7 @@ import urls from './urls'
 
 const Homepage = React.lazy(() => import('../components/pages/Homepage/Homepage'))
 const NeedyDetail = React.lazy(() => import('../components/pages/NeedyDetail/NeedyDetail'))
+const Admin = React.lazy(() => import('../components/pages/Admin/Admin'))
 
 export interface IRouteConfig {
   url: string
@@ -25,6 +26,12 @@ export const routerDefinitions: { [key: string]: IRouteConfig } = {
     key: 'NeedyDetail',
     url: urls.NeedyDetail,
     component: NeedyDetail,
+    protectedRoute: true,
+  },
+  Admin: {
+    key: 'Admin',
+    url: urls.Admin,
+    component: Admin,
     protectedRoute: true,
   },
 }
