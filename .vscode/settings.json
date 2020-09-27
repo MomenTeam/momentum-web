@@ -1,0 +1,6 @@
+{
+  "editor.formatOnSave": true,
+  "conventionalCommits.scopes": ["Derin Yoksulluk Ağı"],
+  "conventionalCommits.emojiFormat": "emoji",
+  "prettier.configPath": "./.prettierrc"
+}
