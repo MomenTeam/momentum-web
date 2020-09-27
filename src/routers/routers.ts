@@ -1,10 +1,9 @@
 import React from 'react'
 import urls from './urls'
 
-const LoginContainer = React.lazy(() => import('../components/pages/Login/LoginContainer'))
-const ProfileContainer = React.lazy(() => import('../components/pages/Profile/ProfileContainer'))
-const QuestionListContainer = React.lazy(() => import('../components/pages/QuestionList/QuestionListContainer'))
-const QuestionDetailContainer = React.lazy(() => import('../components/pages/QuestionDetail/QuestionDetailContainer'))
+const Homepage = React.lazy(() => import('../components/pages/Homepage/Homepage'))
+const NeedyDetail = React.lazy(() => import('../components/pages/NeedyDetail/NeedyDetail'))
+const Payment = React.lazy(() => import('../components/pages/Payment/Payment'))
 
 export interface IRouteConfig {
   url: string
@@ -17,29 +16,17 @@ export interface IRouteConfig {
 }
 
 export const routerDefinitions: { [key: string]: IRouteConfig } = {
-  QuestionList: {
-    key: 'QuestionList',
-    url: urls.QuestionList,
-    component: QuestionListContainer,
+  Homepage: {
+    key: 'Homepage',
+    url: urls.Homepage,
+    component: Homepage,
     protectedRoute: true,
   },
-  QuestionDetail: {
-    key: 'QuestionDetail',
-    url: urls.QuestionDetail,
-    component: QuestionDetailContainer,
+  NeedyDetail: {
+    key: 'Homepage',
+    url: urls.NeedyDetail,
+    component: NeedyDetail,
     protectedRoute: true,
-  },
-  Profile: {
-    key: 'Profile',
-    url: urls.Profile,
-    component: ProfileContainer,
-    protectedRoute: true,
-  },
-  Login: {
-    key: 'Login',
-    url: urls.Login,
-    component: LoginContainer,
-    protectedRoute: false,
   },
 }
 

@@ -28,33 +28,6 @@ const theme: ThemeConfig = {
     ExtraBlack: 900,
   },
   palette: {
-    primary500: '#5956E9',
-    primary300: '#9C9AF8',
-    primary100: '#DEDDFD',
-    secondary500: '#FAB8C4',
-    secondary300: '#FDD5D5',
-    secondary100: '#FEF3F1',
-    red500: '#C75C6F',
-    red300: '#EEA2A1',
-    red100: '#FCE6E1',
-    yellow500: '#FFDC60',
-    yellow300: '#FFEE9F',
-    yellow100: '#FFFADF',
-    purple500: '#896BA7',
-    purple300: '#D0B3E4',
-    purple100: '#F5E8FA',
-    success500: '#4BD857',
-    success300: '#9DF394',
-    success100: '#E5FDDC',
-    warning500: '#FC9B0A',
-    warning300: '#FECF6B',
-    warning100: '#FEF3CD',
-    danger500: '#FC473A',
-    danger300: '#FEA488',
-    danger100: '#FEE7D7',
-    info500: '#32D6FF',
-    info300: '#83F8FF',
-    info100: '#D6FFFB',
     gray900: '#1A202C',
     gray800: '#2D3748',
     gray700: '#4A5568',
@@ -64,6 +37,9 @@ const theme: ThemeConfig = {
     gray300: '#E2E8F0',
     gray200: '#EDF2F7',
     gray100: '#F7FAFC',
+    secondary500: '#FAB8C4',
+    secondary300: '#FDD5D5',
+    secondary100: '#FEF3F1',
   },
   borderRadii: {
     xs: '2px',
@@ -91,6 +67,13 @@ const theme: ThemeConfig = {
     '9xl': space(13, 'minor') /* 52 */,
     '10xl': space(14, 'minor') /* 56 */,
     xxl: space(24, 'minor') /* 96 */,
+  },
+  Button: {
+    styles: {
+      base: {
+        borderRadius: '24px !important',
+      },
+    },
   },
   Select: {
     styles: {
@@ -138,19 +121,6 @@ const theme: ThemeConfig = {
       styles: {
         base: {
           background: '#edf2f7',
-        },
-      },
-    },
-    Group: {
-      Title: {
-        styles: {
-          base: {
-            background: '#F7FAFC',
-            borderRadius: '8px',
-            paddingX: '16px',
-            paddingY: '4px',
-            marginBottom: '8px',
-          },
         },
       },
     },

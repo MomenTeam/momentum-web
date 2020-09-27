@@ -1,10 +1,7 @@
 const urls = {
-  Login: '/',
-  Register: '/register',
-  Dashboard: '/dashboard',
-  QuestionList: '/home',
-  QuestionDetail: '/q/:id',
-  Profile: '/profile',
+  Homepage: '/',
+  NeedyDetail: '/hane/:id',
+  Payment: '/odeme',
 }
 
 export default urls

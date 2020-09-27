@@ -1,9 +1,0 @@
-{
-  "translation": {
-    "login": {
-      "welcome": "Giriş Yap",
-      "email": "E-mail Adresiniz",
-      "NotAuthorizedException": "Kullanıcı adı veya şifreniz yanlış"
-    }
-  }
-}
